@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="utf-8" name="viewport" initial-scale="1">
+  <meta charset="utf-8" name="viewport">
+  <meta name="keywords" content="移动端">
   <title>Mobile 布局</title>
   <style type="text/css">
     .test {
       display: inline-block;
-      background-color: #457;
+      background-color: #0f0;
       width: 4rem;
     }
   </style>
@@ -20,14 +21,14 @@
   <script type="text/javascript">
     // 视觉图 750px (deviceWidth * dpr)
     // 基准 1rem = 75px
-
+    // rem-unit plugin sublime
     var dpr, rem, scale;
     var docEl = document.documentElement;
     var styleEl = document.createElement('style');
     var metaEl = document.querySelector('meta[name="viewport"]');
     // var deviceWidth = docEl.clientWidth;
     var deviceWidth = window.screen.width;
-    alert('width=' + deviceWidth);
+    // alert('width=' + deviceWidth);
     if (window.orientation !== undefined) {
       deviceWidth = window.screen[window.orientation === 0 ? 'width' : 'height'];
     }
