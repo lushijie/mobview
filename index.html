@@ -27,6 +27,7 @@
     var metaEl = document.querySelector('meta[name="viewport"]');
     // var deviceWidth = docEl.clientWidth;
     var deviceWidth = window.screen.width;
+    alert('width=' + deviceWidth);
     if (window.orientation !== undefined) {
       deviceWidth = window.screen[window.orientation === 0 ? 'width' : 'height'];
     }
