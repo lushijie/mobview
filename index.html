@@ -25,62 +25,73 @@
     <div class="form">
       <div class="form-group">
         <label class="label-title">金额（元）</label>
-        <label class="label-title" style="float: right;">1000</label>
+        <label class="label-title" style="float: right;">10000</label>
       </div>
     </div>
   </div>
 
   <script type="text/javascript">
-    // rem-unit plugin sublime
-    var designWidth = 750; // 视觉图 750px, deviceWidth * dpr
-    var standard = 100; // 基准 1rem = 100px
-    var dpr = window.devicePixelRatio || 1;
-    var scale = 1 / dpr;
-    var docEl = document.documentElement;
-    // var deviceWidth = docEl.clientWidth;
-    var deviceWidth = window.screen.width;
-    // alert('width=' + deviceWidth);
+    (function (doc, win) {
+      function recalc () {
+        // rem-unit plugin sublime
+        var designWidth = 750; // 视觉图 750px, deviceWidth * dpr
+        var standard = 100; // 基准 1rem = 100px
+        var dpr = win.devicePixelRatio || 1;
+        var scale = 1 / dpr;
+        var docEl = doc.documentElement;
+        // var deviceWidth = docEl.clientWidth;
+        var deviceWidth = win.screen.width;
+        // alert('width=' + deviceWidth);
+        if (!deviceWidth) return;
 
-    // 设置data-dpr属性，留作的css hack之用
-    docEl.setAttribute('data-dpr', dpr);
+        // 设置data-dpr属性，留作的css hack之用
+        docEl.setAttribute('data-dpr', dpr);
 
-    // 横竖屏切换
-    if (window.orientation !== undefined) {
-      deviceWidth = window.screen[window.orientation === 0 ? 'width' : 'height'];
-    }
+        // 横竖屏切换
+        if (win.orientation !== undefined) {
+          deviceWidth = win.screen[win.orientation === 0 ? 'width' : 'height'];
+        }
 
-    // 设置基准，设定最大值
-    var rem = Math.min(deviceWidth * dpr * standard / designWidth, standard);
+        // 设置基准，设定最大值
+        var rem = Math.min(deviceWidth * dpr * standard / designWidth, standard);
 
-    // 设置viewport，进行缩放，达到高清效果
-    var metaEl = document.querySelector('meta[name="viewport"]');
-    metaEl.setAttribute('content', 'width=' + dpr * deviceWidth +
-      ',initial-scale=' + scale +
-      ',maximum-scale=' + scale +
-      ',minimum-scale=' + scale +
-      ',user-scalable=no'
-    );
+        // 设置viewport，进行缩放，达到高清效果
+        var metaEl = doc.querySelector('meta[name="viewport"]');
+        metaEl.setAttribute('content', 'width=' + dpr * deviceWidth +
+          ',initial-scale=' + scale +
+          ',maximum-scale=' + scale +
+          ',minimum-scale=' + scale +
+          ',user-scalable=no'
+        );
 
-    // 动态写入样式
-    var styleEl = document.createElement('style');
-    docEl.firstElementChild.appendChild(styleEl);
-    styleEl.innerHTML = 'html{font-size:' + rem + 'px!important;}'
-    + 'body {font-size: ' + 30 + 'px!important;}';
+        // 动态写入样式
+        var styleEl = doc.createElement('style');
+        docEl.firstElementChild.appendChild(styleEl);
+        styleEl.innerHTML = 'html{font-size:' + rem + 'px!important;}'
+        + 'body {font-size: ' + 30 + 'px!important;}';
 
-    // 绑定关键参数到 window 对象
-    window.deviceWidth = deviceWidth;
-    window.dpr = dpr;
-    window.rem = rem;
+        // 绑定关键参数到 window 对象
+        win.deviceWidth = deviceWidth;
+        win.dpr = dpr;
+        win.rem = rem;
 
-    // 给js调用的，某一dpr下rem和px之间的转换函数
-    window.rem2px = function(v) {
-      v = parseFloat(v);
-      return v * rem;
-    };
-    window.px2rem = function(v) {
-      v = parseFloat(v);
-      return v / rem;
-    };
+        // 给js调用的，某一dpr下rem和px之间的转换函数
+        win.rem2px = function(v) {
+          v = parseFloat(v);
+          return v * rem;
+        };
+        win.px2rem = function(v) {
+          v = parseFloat(v);
+          return v / rem;
+        };
+      }
+
+      // addEventListener
+      if (!doc.addEventListener) return;
+      var resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize';
+      win.addEventListener(resizeEvt, recalc, false);
+      doc.addEventListener('DOMContentLoaded', recalc, false);
+    })(document, window);
   </script>
 </body>
 </html>
