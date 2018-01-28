@@ -39,18 +39,17 @@
         var dpr = win.devicePixelRatio || 1;
         var scale = 1 / dpr;
         var docEl = doc.documentElement;
-        // var deviceWidth = docEl.clientWidth;
-        var deviceWidth = win.screen.width;
-        // alert('width=' + deviceWidth);
-        if (!deviceWidth) return;
 
         // 设置data-dpr属性，留作的css hack之用
         docEl.setAttribute('data-dpr', dpr);
 
-        // 横竖屏切换
+        // var deviceWidth = docEl.clientWidth;
+        var deviceWidth = win.screen.width;
         if (win.orientation !== undefined) {
+          // 横竖屏切换
           deviceWidth = win.screen[win.orientation === 0 ? 'width' : 'height'];
         }
+        if (!deviceWidth) return;
 
         // 设置基准，设定最大值
         var rem = Math.min(deviceWidth * dpr * standard / designWidth, standard);
