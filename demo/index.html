@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="utf-8" name="viewport">
+  <meta charset="utf-8" name="viewport" content="width=device-width">
   <meta name="keywords" content="移动端">
   <title>Mobile 布局</title>
   <link rel="stylesheet" type="text/css" href="reset.css">
@@ -36,12 +36,11 @@
   </div>
 
   <script type="text/javascript">
+    // add <meta charset="utf-8" name="viewport" content="width=device-width"> in html
     (function (doc, win) {
       function recalc () {
         // debug
         // rem-unit plugin sublime
-        $('.debug').text(+new Date());
-
         var designWidth = 750; // 视觉图 750px, deviceWidth * dpr
         var standard = 100; // 基准 1rem = 100px
         var dpr = win.devicePixelRatio || 1;
@@ -51,8 +50,10 @@
         // 设置data-dpr属性，留作的css hack之用
         docEl.setAttribute('data-dpr', dpr);
 
-        // var deviceWidth = docEl.clientWidth;
+        // var deviceWidth1 = docEl.clientWidth;
+        // console.log(deviceWidth1);
         var deviceWidth = win.screen.width;
+        // console.log(deviceWidth);
         if (win.orientation !== undefined) {
           // 横竖屏切换
           deviceWidth = win.screen[win.orientation === 0 ? 'width' : 'height'];
