@@ -19,13 +19,18 @@
       border-bottom: 1px solid #f5f5f5;
     }
   </style>
+  <script src="http://lib.baomitu.com/zepto/1.2.0/zepto.js"></script>
 </head>
 <body>
   <div class="wraper">
     <div class="form">
       <div class="form-group">
         <label class="label-title">金额（元）</label>
-        <label class="label-title" style="float: right;">10000</label>
+        <label class="label-title" style="float: right;">100</label>
+      </div>
+
+      <div class="form-group">
+        <span class="debug"></span>
       </div>
     </div>
   </div>
@@ -33,7 +38,10 @@
   <script type="text/javascript">
     (function (doc, win) {
       function recalc () {
+        // debug
         // rem-unit plugin sublime
+        $('.debug').text(+new Date());
+
         var designWidth = 750; // 视觉图 750px, deviceWidth * dpr
         var standard = 100; // 基准 1rem = 100px
         var dpr = win.devicePixelRatio || 1;
