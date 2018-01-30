@@ -2,15 +2,12 @@
 * @Author: lushijie
 * @Date:   2018-01-30 10:13:15
 * @Last Modified by:   lushijie
-* @Last Modified time: 2018-01-30 10:13:46
+* @Last Modified time: 2018-01-30 13:21:43
 */
 // rem-unit plugin sublime
 // add <meta charset="utf-8" name="viewport" content="width=device-width"> in html
 (function (doc, win) {
   function recalc () {
-    // debug
-    $('.debug').text('方向：' + win.orientation);
-
     var designWidth = 750; // 视觉图 750px, deviceWidth * dpr
     var standard = 100; // 基准 1rem = 100px
     var dpr = win.devicePixelRatio || 1;
@@ -20,12 +17,14 @@
     // 设置data-dpr属性，留作的css hack之用
     docEl.setAttribute('data-dpr', dpr);
 
-    // var deviceWidth1 = docEl.clientWidth;
-    var deviceWidth = win.screen.width;
+    var direction = 'portrait'; // 竖屏
     if (win.orientation !== undefined) {
-      // 横竖屏切换
-      deviceWidth = win.screen[win.orientation === 0 ? 'width' : 'height'];
+      direction = win.orientation === 0 ? 'portrait' : 'landscape';
     }
+    $('.debug').text(direction);
+
+    // var deviceWidth1 = docEl.clientWidth;
+    var deviceWidth = win.screen[direction === 'portrait' ? 'width' : 'height'];
     if (!deviceWidth) return;
 
     // 设置基准，设定最大值
@@ -43,7 +42,7 @@
     // 动态写入样式
     var styleEl = doc.createElement('style');
     docEl.firstElementChild.appendChild(styleEl);
-    styleEl.innerHTML = 'html{font-size:' + rem + 'px!important;}'
+    styleEl.innerHTML = 'html{font-size:' + rem + 'px!important; -ms-touch-action: manipulation; touch-action: manipulation;}'
     + 'body {font-size: ' + 30 + 'px!important;}';
 
     // 绑定关键参数到 window 对象
@@ -68,5 +67,9 @@
   win.addEventListener(resizeEvt, function() {
     setTimeout(function() {recalc()} , 200)
   }, false);
-  doc.addEventListener('DOMContentLoaded', recalc, false);
+
+  doc.addEventListener('DOMContentLoaded', function() {
+    recalc();
+    // FastClick.attach(document.body);
+  }, false);
 })(document, window);
